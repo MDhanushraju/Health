@@ -2,6 +2,63 @@
 
 Production-ready Spring Boot app that runs the webhook flow **on startup**. No REST controllers, no UI, no manual trigger.
 
+---
+
+## How to run
+
+**Prerequisites:** Java 17+, Maven (or use the included Maven Wrapper `mvnw.cmd`).
+
+### Option 1: Run the JAR (recommended)
+
+```bash
+# 1. Build the JAR (from project root)
+.\mvnw.cmd clean package -DskipTests
+
+# 2. Run the app
+java -jar target\webhookapp.jar
+```
+
+### Option 2: Run without building JAR
+
+```bash
+.\mvnw.cmd spring-boot:run
+```
+
+**Note:** Stop any already running instance (Ctrl+C in the terminal) before rebuilding or running again, to avoid port-in-use errors.
+
+---
+
+## Where to see the output
+
+All output appears in the **same terminal** where you ran the app (no log file by default).
+
+**On success you will see:**
+
+```
+  .   ____          _            __ _ _
+ ...
+ :: Spring Boot ::                (v3.2.5)
+
+INFO  ... WebhookAppApplication     : Started WebhookAppApplication in X.XXX seconds
+INFO  ... StartupRunner             : Starting webhook flow
+INFO  ... WebhookService             : Webhook received, submitting solution
+INFO  ... WebhookService             : testWebhook response: <server response here>
+INFO  ... WebhookService             : Flow completed successfully
+```
+
+- **"Flow completed successfully"** = the SQL solution was submitted to the API.
+- **"testWebhook response: ..."** = the evaluator’s response (e.g. success/score message).
+
+**To save output to a file:**
+
+```bash
+java -jar target\webhookapp.jar > output.txt 2>&1
+```
+
+Then open `output.txt` to read the logs.
+
+---
+
 ## Flow (automatic on startup)
 
 1. POST to `https://bfhldevapigw.healthrx.co.in/hiring/generateWebhook/JAVA` with `name`, `regNo`, `email`.

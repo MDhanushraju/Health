@@ -89,6 +89,9 @@ public class WebhookService {
 
         SubmitRequest body = new SubmitRequest(finalQuery);
         HttpEntity<SubmitRequest> entity = new HttpEntity<>(body, headers);
-        restTemplate.postForEntity(TEST_WEBHOOK_URL, entity, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(TEST_WEBHOOK_URL, entity, String.class);
+        if (response.getBody() != null && !response.getBody().isEmpty()) {
+            log.info("testWebhook response: {}", response.getBody());
+        }
     }
 }
